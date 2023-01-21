@@ -25,10 +25,11 @@ namespace WebApplication1.Controllers
         // }
 
         // POST api/<UsuarioController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        // {
-        //}
+        [HttpPost]
+        public bool Post([FromBody] Usuario oUsuario)
+        {
+            return UsuarioData.Registrar(oUsuario);
+        }
 
         // PUT api/<UsuarioController>/5
         //[HttpPut("{id}")]
