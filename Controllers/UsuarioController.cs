@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using WebApplication1.Contexts;
 using WebApplication1.Models;
 
@@ -16,21 +18,21 @@ namespace WebApplication1.Controllers
         {
             return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = true, response = UsuarioData.Listar() });
         }
+        
 
         // GET api/<UsuarioController>/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(string id)
         {
             return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = "Usuario encontrado", response = UsuarioData.Obtener(id) });
         }
 
-        // POST api/<UsuarioController>
+        // POST api/<UsuarioController>        
         [HttpPost]
         public IActionResult Post([FromBody] Usuario oUsuario)
         {
-            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = true, response = UsuarioData.Registro(oUsuario) });
+            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = "Usuario creado", response = UsuarioData.Registrar(oUsuario) });
         }
-
         // PUT api/<UsuarioController>/5
         //[HttpPut("{id}")]
         //public void Put(int id, [FromBody] string value)
