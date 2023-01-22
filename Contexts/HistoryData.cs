@@ -1,19 +1,17 @@
 ﻿using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using System.Data;
 using WebApplication1.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebApplication1.Contexts
 {
-    public class UsuarioData
+    public class HistoryData
     {
-        public static List<Usuario> Listar()
+        public static List<History> ListarHistory()
         {
-            List<Usuario> oListaUsuario = new List<Usuario>();
+            List<History> oListaHistory = new List<History>();
             using (SqlConnection oConexion = new SqlConnection(Conexion.rutaConexion))
             {
-                SqlCommand cmd = new SqlCommand("usp_listar", oConexion);
+                SqlCommand cmd = new SqlCommand("usp_listar_history", oConexion);
                 cmd.CommandType = CommandType.StoredProcedure;
                 try
                 {
@@ -25,34 +23,36 @@ namespace WebApplication1.Contexts
 
                         while (dr.Read())
                         {
-                            oListaUsuario.Add(new Usuario()
+                            oListaHistory.Add(new History()
                             {
-                                UsuarioId = Convert.ToInt32(dr["UsuarioId"]),
-                                Nombres = dr["Nombres"].ToString(),                                
-                                FechaRegistro = Convert.ToDateTime(dr["FechaRegistro"].ToString()),
-                                Estado = dr["estado"].ToString(),
+                                HistoryId = Convert.ToInt32(dr["HistoryId"]),
+                                UsuarioIdFk = dr["UsuarioIdFk"].ToString(),
+                                City = dr["City"].ToString(),
+                                Info = dr["Info"].ToString(),
+                                FechaVista = Convert.ToDateTime(dr["FechaVista"].ToString()),
                             });
                         }
 
-                    }                    
-                    return oListaUsuario;
+                    }
+                    return oListaHistory;
                 }
                 catch (Exception ex)
                 {
                     Console.Write(ex);
-                    return oListaUsuario;
+                    return oListaHistory;
                 }
             }
         }
 
-        public static bool Registrar(Usuario oUsuario)
+        public static bool RegistroHistory(History oHistory)
         {
             using (SqlConnection oConexion = new SqlConnection(Conexion.rutaConexion))
             {
-                SqlCommand cmd = new SqlCommand("usp_registrar", oConexion);
+                SqlCommand cmd = new SqlCommand("usp_registrar_history", oConexion);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@nombres", oUsuario.Nombres);
-
+                cmd.Parameters.AddWithValue("@UsuarioIdFk", oHistory.UsuarioIdFk);
+                cmd.Parameters.AddWithValue("@City", oHistory.City);
+                cmd.Parameters.AddWithValue("@Info", oHistory.Info);
                 try
                 {
                     oConexion.Open();
@@ -65,15 +65,15 @@ namespace WebApplication1.Contexts
                 }
             }
         }
-
-        public static Usuario Obtener(int idusuario)
+        
+        public static History ObtenerHistory(int idHistory)
         {
-            Usuario oUsuario = new Usuario();
+            History oHistory = new History();
             using (SqlConnection oConexion = new SqlConnection(Conexion.rutaConexion))
             {
-                SqlCommand cmd = new SqlCommand("usp_obtener", oConexion);
+                SqlCommand cmd = new SqlCommand("usp_obtener_history", oConexion);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@usuarioid", idusuario);
+                cmd.Parameters.AddWithValue("@HistoryId", idHistory);
 
                 try
                 {
@@ -85,33 +85,33 @@ namespace WebApplication1.Contexts
 
                         while (dr.Read())
                         {
-                            oUsuario = new Usuario()
+                            oHistory = new History()
                             {
-                                UsuarioId = Convert.ToInt32(dr["UsuarioId"]),
-                                Nombres = dr["Nombres"].ToString(),
-                                FechaRegistro = Convert.ToDateTime(dr["FechaRegistro"].ToString()),
-                                Estado = dr["Estado"].ToString(),
+                                HistoryId = Convert.ToInt32(dr["HistoryId"]),
+                                UsuarioIdFk = dr["UsuarioIdFk"].ToString(),
+                                City = dr["City"].ToString(),
+                                Info = dr["Info"].ToString(),
+                                FechaVista = Convert.ToDateTime(dr["FechaVista"].ToString()),
                             };
                         }
 
                     }
-                    return oUsuario;
+                    return oHistory;
                 }
                 catch (Exception ex)
                 {
-                    return oUsuario;
+                    return oHistory;
                 }
             }
         }
 
-        public static bool Eliminar(int id)
+        public static bool EliminarHistory(int id)
         {
             using (SqlConnection oConexion = new SqlConnection(Conexion.rutaConexion))
             {
-                SqlCommand cmd = new SqlCommand("usp_eliminar", oConexion);
+                SqlCommand cmd = new SqlCommand("usp_eliminar_history", oConexion);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@usuarioid", id);
-
+                cmd.Parameters.AddWithValue("@HistoryId", id);
                 try
                 {
                     oConexion.Open();
@@ -124,6 +124,5 @@ namespace WebApplication1.Contexts
                 }
             }
         }
-
     }
 }

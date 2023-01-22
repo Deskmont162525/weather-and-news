@@ -7,7 +7,7 @@ namespace WebApplication1.Models
         [Key]
         public int UsuarioId { get; set; }
         public string? Nombres { get; set; }
-        public DateTime FechaRegistro { get; set; }
+        public DateTime? FechaRegistro { get; set; }
         public string? Estado { get; set; }
     }
 }

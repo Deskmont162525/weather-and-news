@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using WebApplication1.Contexts;
 using WebApplication1.Models;
 
@@ -12,25 +13,25 @@ namespace WebApplication1.Controllers
     {
         // GET: api/<UsuarioController>
         [HttpGet]
-        public IEnumerable<Usuario> Get()
+        public IActionResult Get()
         {
-            return UsuarioData.Listar();
+            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = true, response = UsuarioData.Listar() });
         }
+        
 
         // GET api/<UsuarioController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //return "value";
-        // }
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = "Usuario encontrado", response = UsuarioData.Obtener(id) });
+        }
 
         // POST api/<UsuarioController>
         [HttpPost]
-        public bool Post([FromBody] Usuario oUsuario)
+        public IActionResult Post([FromBody] Usuario oUsuario)
         {
-            return UsuarioData.Registrar(oUsuario);
+            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = "Usuario encontrado", response = UsuarioData.Registrar(oUsuario) });
         }
-
         // PUT api/<UsuarioController>/5
         //[HttpPut("{id}")]
         //public void Put(int id, [FromBody] string value)
@@ -38,9 +39,10 @@ namespace WebApplication1.Controllers
         //}
 
         // DELETE api/<UsuarioController>/5
-        // [HttpDelete("{id}")]
-        // public void Delete(int id)
-        //{
-        // }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = "Usuario Eliminado Correctamente", response = UsuarioData.Eliminar(id) });
+        }
     }
 }
