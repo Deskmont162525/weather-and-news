@@ -44,9 +44,8 @@ namespace WebApplication1.Contexts
             }
         }
 
-        public static List<History> RegistroHistory(History oHistory)
+        public static bool RegistroHistory(History oHistory)
         {
-            List<History> oListaHistory = new List<History>();
             using (SqlConnection oConexion = new SqlConnection(Conexion.rutaConexion))
             {
                 SqlCommand cmd = new SqlCommand("usp_registrar_history", oConexion);
@@ -58,27 +57,11 @@ namespace WebApplication1.Contexts
                 {
                     oConexion.Open();
                     cmd.ExecuteNonQuery();
-
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-
-                        while (dr.Read())
-                        {
-                            oListaHistory.Add(new History()
-                            {
-                                UsuarioIdFk = dr["UsuarioIdFk"].ToString(),
-                                City = dr["City"].ToString(),
-                                Info = dr["Info"].ToString(),
-                            });
-                        }
-
-                    }
-                    return oListaHistory;
+                    return true;
                 }
                 catch (Exception ex)
                 {
-                    Console.Write(ex);
-                    return oListaHistory;
+                    return false;
                 }
             }
         }

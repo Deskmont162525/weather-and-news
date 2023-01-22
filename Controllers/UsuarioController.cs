@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using WebApplication1.Contexts;
 using WebApplication1.Models;
 
@@ -16,6 +17,7 @@ namespace WebApplication1.Controllers
         {
             return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = true, response = UsuarioData.Listar() });
         }
+        
 
         // GET api/<UsuarioController>/5
         [HttpGet("{id}")]
@@ -28,9 +30,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Usuario oUsuario)
         {
-            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = true, response = UsuarioData.Registro(oUsuario) });
+            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = "Usuario encontrado", response = UsuarioData.Registrar(oUsuario) });
         }
-
         // PUT api/<UsuarioController>/5
         //[HttpPut("{id}")]
         //public void Put(int id, [FromBody] string value)

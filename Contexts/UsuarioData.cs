@@ -45,37 +45,23 @@ namespace WebApplication1.Contexts
             }
         }
 
-        public static List<Usuario> Registro(Usuario oUsuario)
+        public static bool Registrar(Usuario oUsuario)
         {
-            List<Usuario> oListaUsuario = new List<Usuario>();
             using (SqlConnection oConexion = new SqlConnection(Conexion.rutaConexion))
             {
                 SqlCommand cmd = new SqlCommand("usp_registrar", oConexion);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@nombres", oUsuario.Nombres);
+
                 try
                 {
                     oConexion.Open();
                     cmd.ExecuteNonQuery();
-
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-
-                        while (dr.Read())
-                        {
-                            oListaUsuario.Add(new Usuario()
-                            {
-                                UsuarioId = Convert.ToInt32(dr["UsuarioId"]),
-                            });
-                        }
-
-                    }
-                    return oListaUsuario;
+                    return true;
                 }
                 catch (Exception ex)
                 {
-                    Console.Write(ex);
-                    return oListaUsuario;
+                    return false;
                 }
             }
         }

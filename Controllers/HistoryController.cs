@@ -1,52 +1,41 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Contexts;
 using WebApplication1.Models;
 
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 namespace WebApplication1.Controllers
 {
-    public class HistoryController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HistoryController : ControllerBase
     {
-        // GET: HistoryController
-        public ActionResult Index()
+        // GET: api/<HistoryController>
+        [HttpGet]
+        public IActionResult Get()
         {
             return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = true, response = HistoryData.ListarHistory() });
         }
 
-        // GET: HistoryController/Details/5
-        public ActionResult Details(int id)
+        // GET api/<HistoryController>/5
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
         {
             return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = "History encontrado", response = HistoryData.ObtenerHistory(id) });
         }
 
-        // POST: HistoryController/Create
+        // POST api/<HistoryController>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(History oHistory)
+        public IActionResult Post([FromBody] History oHistory)
         {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = true, response = HistoryData.RegistroHistory(oHistory) });
-            }
-            catch
-            {
-                return View();
-            }
+            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = true, response = HistoryData.RegistroHistory(oHistory) });
         }
-       
-        // POST: HistoryController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+
+        // DELETE api/<HistoryController>/5
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = "History Eliminado Correctamente", response = HistoryData.EliminarHistory(id) });
-            }
-            catch
-            {
-                return View();
-            }
+            return StatusCode(StatusCodes.Status200OK, new { mensaje_ok = "History Eliminado Correctamente", response = HistoryData.EliminarHistory(id) });
         }
     }
 }
