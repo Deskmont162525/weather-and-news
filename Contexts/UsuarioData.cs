@@ -66,7 +66,7 @@ namespace WebApplication1.Contexts
             }
         }
 
-        public static Usuario Obtener(int idusuario)
+        public static Usuario Obtener(string idusuario)
         {
             Usuario oUsuario = new Usuario();
             using (SqlConnection oConexion = new SqlConnection(Conexion.rutaConexion))

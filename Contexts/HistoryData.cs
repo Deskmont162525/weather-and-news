@@ -66,15 +66,14 @@ namespace WebApplication1.Contexts
             }
         }
         
-        public static History ObtenerHistory(int idHistory)
+        public static List<History> ObtenerHistory(int idHistory)
         {
-            History oHistory = new History();
+            List<History> oListaHistory = new List<History>();
             using (SqlConnection oConexion = new SqlConnection(Conexion.rutaConexion))
             {
                 SqlCommand cmd = new SqlCommand("usp_obtener_history", oConexion);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@HistoryId", idHistory);
-
                 try
                 {
                     oConexion.Open();
@@ -85,26 +84,26 @@ namespace WebApplication1.Contexts
 
                         while (dr.Read())
                         {
-                            oHistory = new History()
+                            oListaHistory.Add(new History()
                             {
                                 HistoryId = Convert.ToInt32(dr["HistoryId"]),
                                 UsuarioIdFk = dr["UsuarioIdFk"].ToString(),
                                 City = dr["City"].ToString(),
                                 Info = dr["Info"].ToString(),
                                 FechaVista = Convert.ToDateTime(dr["FechaVista"].ToString()),
-                            };
+                            });
                         }
 
                     }
-                    return oHistory;
+                    return oListaHistory;
                 }
                 catch (Exception ex)
                 {
-                    return oHistory;
+                    Console.Write(ex);
+                    return oListaHistory;
                 }
             }
         }
-
         public static bool EliminarHistory(int id)
         {
             using (SqlConnection oConexion = new SqlConnection(Conexion.rutaConexion))
